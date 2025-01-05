@@ -1,0 +1,44 @@
+import wbdata
+import pandas as pd
+from datetime import datetime
+
+# Define the country and time range (FDI:Trade Openness (e.g., Exports + Imports as % of GDP) Political Stability Index (or Political Risk Index), 
+#Exchange Rate Stability/Volatility Infrastructure Quality Index Labor Costs (e.g., Average wages) Market Size (e.g., GDP per capita)
+#Education Level (e.g., Average years of schooling, literacy rate), Interest Rates Corporate Tax Rate Global FDI Trends (e.g., Regional FDI inflows)
+#How to Incorporate These Variables:Data Acquisition: You’ll need to find relevant datasets for these variables. 
+#Many of these variables are available through international organizations such as the World Bank, IMF, or UNCTAD. Correlation Analysis: Once you have collected the d)
+
+country = "NGA"  # Nigeria
+start_date = datetime(1990, 1, 1)  # Start date
+end_date = datetime.now()  # End date
+
+# Define the World Bank indicators
+indicators = {
+    "NY.GDP.MKTP.CD": "GDP (current US$)",  # GDP 	
+    "SL.TLF.CACT.ZS": "(Labor force participation rate)", #total (% of total population ages 15+) (modeled ILO estimate)": "SL.TLF.CACT.ZS",
+    "FR.INR.RINR": "Real interest rate (%))", #Real interest rate (%) (FR.INR.RINR)
+    "BX.KLT.DINV.CD.WD": "FDI (net inflows, current US$)",  # Foreign Direct Investment
+    'CC.EST': '(Control of Corruption: Estimate)',
+    'NY.GDP.PCAP.CD': '(GDP PER CAPITAL)',
+    'PX.REX.REER':'Real effective exchange rate index (2010 = 100)', #Real effective exchange rate index (2010 = 100) (PX.REX.REER)
+    "FP.CPI.TOTL": "Inflation (CPI)",  # Inflation, Consumer Price Index
+    "EG.ELC.ACCS.ZS": "Access to electricity (% of population)",  # Business Environment substitute Access to electricity (% of population)  
+    "BM.KLT.DINV.WD.GD.ZS": "Investment (% of GDP)",  # Investment as a percentage of GDP
+    "SP.POP.GROW": "Labor Force (Total)",  # Labor Force
+}
+
+try:
+    # Fetch data from the World Bank API
+    data = wbdata.get_dataframe(indicators, country=country)
+
+    # Convert the index to datetime format and filter the data for the specified date range
+    data.index = pd.to_datetime(data.index)
+    data = data.loc[(data.index >= start_date) & (data.index <= end_date)]
+
+    # Display the fetched data
+    print(data.head())
+
+except Exception as e:
+    print(f"An error occurred while fetching the data: {e}")
+df2 = data
+df2
